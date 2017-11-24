@@ -7,6 +7,7 @@ const browserify = require('browserify');
 const reactify = require('reactify');
 const source = require('vinyl-source-stream');
 const concat = require('gulp-concat');
+const eslint = require('gulp-eslint');
 
 const config = {
     port: 9005,
@@ -62,10 +63,16 @@ gulp.task('css', ()=> {
         .pipe(gulp.dest(`${config.paths.dist}/css`))
 })
 
+gulp.task('lint', ()=> {
+    return gulp.src(config.paths.js)
+        .pipe(eslint({config: 'eslint.config.json'}))
+        .pipe(eslint.format());
+})
+
 gulp.task('watch', () => {
     gulp.watch(config.paths.html, ['html']);
-    gulp.watch(config.paths.js, ['js'])
+    gulp.watch(config.paths.js, ['js', 'lint'])
 });
 
-gulp.task('default', ['html','css', 'js', 'open', 'watch']);
+gulp.task('default', ['html','css', 'js', 'lint', 'open', 'watch']);
 
