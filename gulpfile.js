@@ -63,6 +63,15 @@ gulp.task('css', ()=> {
         .pipe(gulp.dest(`${config.paths.dist}/css`))
 })
 
+gulp.task('images', ()=> {
+    gulp.src(config.paths.images)
+        .pipe(gulp.dest(`${config.paths.dist}/images`))
+        .pipe(connect.reload());
+
+    gulp.src('./src/favicon.ico')
+        .pipe(gulp.dest(config.paths.dist));
+})
+
 gulp.task('lint', ()=> {
     return gulp.src(config.paths.js)
         .pipe(eslint({config: 'eslint.config.json'}))
@@ -74,5 +83,5 @@ gulp.task('watch', () => {
     gulp.watch(config.paths.js, ['js', 'lint'])
 });
 
-gulp.task('default', ['html','css', 'js', 'lint', 'open', 'watch']);
+gulp.task('default', ['html','css', 'js', 'images', 'lint', 'open', 'watch']);
 
